@@ -17,7 +17,10 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <>
+    <> 
+    <div className="w-[auto]">
+
+      
       {/* Hamburger Icon - Mobile Only */}
       <button
         className="md:hidden fixed top-4 left-4 z-50 text-white bg-[#0a0f1c] p-2 rounded"
@@ -129,6 +132,8 @@ export default function Sidebar() {
           </Link>
         </nav>
       </div>
+   
+    </div>
     </>
   );
 }
