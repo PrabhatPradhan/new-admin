@@ -62,7 +62,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div>
+    <div className="w-auto">
       {/* Header */}
       <header className="bg-[#2f3d56] text-white flex justify-between items-center px-4 sm:px-6 py-4 relative">
         <h1 className="text-lg sm:text-xl font-semibold"> </h1>
