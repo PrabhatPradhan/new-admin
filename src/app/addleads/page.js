@@ -68,7 +68,7 @@ export default function Page() {
     leadName: "",
     assignedTo: "",
   });
-  const [showEditModal, setShowEditModal] = useState(false);
+   
 
   const [editLead, setEditLead] = useState({
     name: "",
@@ -94,19 +94,8 @@ export default function Page() {
     setAssignLead({ leadName: "", assignedTo: "" });
     setShowAssignModal(false);
   };
-
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditLead({ ...editLead, [name]: value });
-  };
-
-  const handleUpdateLead = () => {
-    const updatedLeads = [...leads];
-    updatedLeads[currentLeadIndex] = editLead;
-    setLeads(updatedLeads);
-    setShowEditModal(false);
-  };
-
+ 
+   
   const handleDeleteLead = (index) => {
     const updatedLeads = leads.filter((_, i) => i !== index);
     setLeads(updatedLeads);
