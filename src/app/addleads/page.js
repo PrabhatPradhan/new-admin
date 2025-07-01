@@ -70,14 +70,7 @@ export default function Page() {
   });
    
 
-  const [editLead, setEditLead] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    source: "",
-    assigned: "",
-    status: "",
-  });
+  
 
   const handleAssignChange = (e) => {
     const { name, value } = e.target;
