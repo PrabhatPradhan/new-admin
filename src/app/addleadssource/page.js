@@ -14,9 +14,8 @@ export default function Page() {
     row4: true,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // <-- NEW
-  const [newLeadSource, setNewLeadSource] = useState("");
-  const [editData, setEditData] = useState({ name: "", status: "Active" }); // <-- NEW
+      const [newLeadSource, setNewLeadSource] = useState("");
+  
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [leadToDelete, setLeadToDelete] = useState(null);
 
@@ -43,15 +42,7 @@ export default function Page() {
 
   
 
-  const handleUpdateLead = () => {
-    console.log("Updated Lead Source:", editData);
-    setIsEditModalOpen(false);
-  };
-  const handleDeleteClick = (leadKey) => {
-    setLeadToDelete(leadKey);
-    setIsDeleteModalOpen(true);
-  };
-
+   
   const confirmDelete = () => {
     console.log("Deleted lead:", leadToDelete);
     // TODO: Remove lead from data source if connected to API

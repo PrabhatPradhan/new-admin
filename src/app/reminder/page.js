@@ -56,7 +56,7 @@ const initialLeads = [
 
 export default function Page() {
   const [leads, setLeads] = useState(initialLeads);
-  const [showModal, setShowModal] = useState(false);
+   
   
 
   const [showNoteModal, setShowNoteModal] = useState(false);
