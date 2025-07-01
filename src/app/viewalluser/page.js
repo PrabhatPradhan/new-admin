@@ -3,7 +3,13 @@
 import React, { useState } from "react";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Navbar from "../../Components/Navbar/Navbar";
-import { FaTachometerAlt, FaPlus, FaListAlt, FaEdit, FaTrash } from "react-icons/fa";
+import {
+  FaTachometerAlt,
+  FaPlus,
+  FaListAlt,
+  FaEdit,
+  FaTrash,
+} from "react-icons/fa";
 import Link from "next/link";
 
 const users = [
@@ -69,8 +75,12 @@ export default function Page() {
               <FaTachometerAlt />
             </div>
             <div>
-              <h1 className="text-xl md:text-2xl font-semibold text-gray-800">Manage Users</h1>
-              <p className="text-sm text-gray-600">Very detailed &amp; featured admin.</p>
+              <h1 className="text-xl md:text-2xl font-semibold text-gray-800">
+                Manage Users
+              </h1>
+              <p className="text-sm text-gray-600">
+                Very detailed &amp; featured admin.
+              </p>
             </div>
           </div>
 
@@ -85,7 +95,9 @@ export default function Page() {
               </div>
 
               <div className="border rounded shadow">
-                <div className="bg-blue-100 px-4 py-2 font-semibold text-lg">Users List</div>
+                <div className="bg-blue-100 px-4 py-2 font-semibold text-lg">
+                  Users List
+                </div>
 
                 <div className="p-4 flex flex-wrap gap-2 items-center">
                   <select className="border px-2 py-1 rounded text-sm">
@@ -99,11 +111,16 @@ export default function Page() {
                   <button className="bg-green-600 text-white px-3 py-1 rounded flex items-center gap-2 text-sm">
                     <FaListAlt /> Import
                   </button>
-                  <select className="border px-2 py-1 rounded text-sm">
-                    <option>Select a Name</option>
-                    <option>Alrazy</option>
-                  </select>
-                  <button className="bg-teal-600 text-white px-4 py-1 rounded text-sm">Search</button>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Search"
+                    className="border border-gray-300       "
+                  />
+
+                  <button className="bg-teal-600 text-white px-4 py-1 rounded text-sm">
+                    Search
+                  </button>
                 </div>
 
                 <div className="overflow-x-auto w-full">
@@ -121,24 +138,33 @@ export default function Page() {
                     </thead>
                     <tbody>
                       {users.map((user, i) => (
-                        <tr key={i} className={i % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                        <tr
+                          key={i}
+                          className={i % 2 === 0 ? "bg-gray-50" : "bg-white"}
+                        >
                           <td className="px-4 py-2 border">{user.code}</td>
                           <td className="px-4 py-2 border">{user.name}</td>
                           <td className="px-4 py-2 border">{user.phone}</td>
                           <td className="px-4 py-2 border">{user.email}</td>
                           <td className="px-4 py-2 border">{user.pass}</td>
                           <td className="px-4 py-2 border">
-                            <span className={`px-3 py-1 text-white rounded text-sm ${user.status === "Active" ? "bg-teal-600" : "bg-red-500"}`}>
+                            <span
+                              className={`px-3 py-1 text-white rounded text-sm ${
+                                user.status === "Active"
+                                  ? "bg-teal-600"
+                                  : "bg-red-500"
+                              }`}
+                            >
                               {user.status}
                             </span>
                           </td>
                           <td className="px-4 py-2 border space-x-2">
-                            <button
-                              onClick={() => handlePopup("edit", user)}
-                              className="bg-teal-600 text-white p-2 rounded text-sm"
-                            >
-                              <FaEdit />
-                            </button>
+                          <Link href="/editlead">
+                          {" "}
+                          <button className="bg-teal-600 text-white p-2 rounded">
+                            <FaEdit />
+                          </button>{" "}
+                        </Link>
                             <button
                               onClick={() => handlePopup("delete", user)}
                               className="bg-red-600 text-white p-2 rounded text-sm"
@@ -155,7 +181,10 @@ export default function Page() {
 
               <footer className="text-center text-sm text-gray-500 py-4 bg-white shadow-inner mt-6">
                 Copyright © 2016-2017{" "}
-                <span className="text-teal-600 font-semibold">Webideainfotech</span>. All rights reserved.
+                <span className="text-teal-600 font-semibold">
+                  Webideainfotech
+                </span>
+                . All rights reserved.
               </footer>
             </div>
           </div>
@@ -167,7 +196,10 @@ export default function Page() {
         <div className="fixed inset-0   bg-opacity-40 flex justify-center items-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 shadow-xl w-full max-w-md text-center">
             <p className="text-lg font-semibold mb-4">{popupContent}</p>
-            <button onClick={closePopup} className="bg-red-600 text-white px-4 py-2 rounded mt-4">
+            <button
+              onClick={closePopup}
+              className="bg-red-600 text-white px-4 py-2 rounded mt-4"
+            >
               Close
             </button>
           </div>

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Navbar from "../../Components/Navbar/Navbar";
 import { FaTachometerAlt, FaEdit, FaTrash, FaEye } from "react-icons/fa";
+import Link from "next/link";
 
 const initialLeads = [
   {
@@ -50,8 +51,7 @@ const initialLeads = [
 export default function Page() {
   const [leads, setLeads] = useState(initialLeads);
   const [showModal, setShowModal] = useState(false);
-  const [editingLead, setEditingLead] = useState(null);
-
+  
   const handleDelete = (index) => {
     const confirmDelete = window.confirm(
       `Are you sure you want to delete lead: ${leads[index].name}?`
@@ -62,10 +62,7 @@ export default function Page() {
     }
   };
 
-  const handleEdit = (index) => {
-    setEditingLead(leads[index]);
-    setShowModal(true);
-  };
+  
   const [showNoteModal, setShowNoteModal] = useState(false);
   const [selectedLeadIndex, setSelectedLeadIndex] = useState(null);
   const [note, setNote] = useState("");
@@ -136,12 +133,12 @@ export default function Page() {
                       <td className="border p-2">{lead.assigned}</td>
                       <td className="border p-2">{lead.status}</td>
                       <td className="border p-2 space-x-2">
-                        <button
-                          onClick={() => handleEdit(index)}
-                          className="text-green-600"
-                        >
-                          <FaEdit />
-                        </button>
+                      <Link href="/editlead">
+                          {" "}
+                          <button className="bg-teal-600 text-white p-2 rounded">
+                            <FaEdit />
+                          </button>{" "}
+                        </Link>
                         <button
                           onClick={() => handleDelete(index)}
                           className="text-red-600"

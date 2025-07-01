@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Navbar from "../../Components/Navbar/Navbar";
 import { FaTachometerAlt, FaEdit, FaTrash, FaEye } from "react-icons/fa";
+import Link from "next/link";
 
 const initialLeads = [
   { name: 'Ford', email: 'ford@info.net', mobile: '9170425365', source: 'Phone', assigned: 'User 1', status: 'Follow up' },
@@ -15,8 +16,7 @@ const initialLeads = [
 
 export default function Page() {
   const [leads, setLeads] = useState(initialLeads);
-  const [showModal, setShowModal] = useState(false);
-  const [editingLead, setEditingLead] = useState(null);
+ 
   const [showNoteModal, setShowNoteModal] = useState(false);
 const [noteDate, setNoteDate] = useState('');
 const [noteText, setNoteText] = useState('');
@@ -31,10 +31,7 @@ const [noteText, setNoteText] = useState('');
     }
   };
 
-  const handleEdit = (index) => {
-    setEditingLead(leads[index]);
-    setShowModal(true);
-  };
+   
   const handleViewNote = () => {
     const today = new Date();
     const formattedDate = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -102,9 +99,12 @@ const [noteText, setNoteText] = useState('');
                       <td className="border p-2">{lead.assigned}</td>
                       <td className="border p-2">{lead.status}</td>
                       <td className="border p-2 space-x-2">
-                        <button onClick={() => handleEdit(index)} className="text-green-600">
-                          <FaEdit />
-                        </button>
+                      <Link href="/editlead">
+                          {" "}
+                          <button className="bg-teal-600 text-white p-2 rounded">
+                            <FaEdit />
+                          </button>{" "}
+                        </Link>
                         <button onClick={() => handleDelete(index)} className="text-red-600">
                           <FaTrash />
                         </button>
@@ -130,71 +130,7 @@ const [noteText, setNoteText] = useState('');
           </div>
         </div>
       </div>
-      {showModal && editingLead && (
-  <div className="fixed inset-0   bg-opacity-50 flex items-center justify-center z-50">
-    <div className="bg-white rounded shadow-md p-6 w-full max-w-xl">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Update Leads</h2>
-        <button onClick={() => setShowModal(false)} className="text-gray-500 text-xl">&times;</button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Name</label>
-          <input type="text" defaultValue={editingLead.name} className="w-full border p-2 rounded" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Email id</label>
-          <input type="email" defaultValue={editingLead.email} className="w-full border p-2 rounded" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Phone No</label>
-          <input type="text" defaultValue={editingLead.mobile} className="w-full border p-2 rounded" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">State</label>
-          <input type="text" className="w-full border p-2 rounded" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Lead Source</label>
-          <select className="w-full border p-2 rounded" defaultValue={editingLead.source}>
-            <option>Phone Call</option>
-            <option>Marketing</option>
-            <option>Google</option>
-            <option>Facebook</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Assign Lead</label>
-          <select className="w-full border p-2 rounded" defaultValue={editingLead.assigned}>
-            <option>User 1</option>
-            <option>User 2</option>
-            <option>User 3</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Lead Status</label>
-          <select className="w-full border p-2 rounded" defaultValue={editingLead.status}>
-            <option>Follow up</option>
-            <option>DND</option>
-            <option>Interested</option>
-            <option>Switch Off</option>
-            <option>Not Important</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Tour Details</label>
-          <textarea className="w-full border p-2 rounded"></textarea>
-        </div>
-      </div>
-
-      <div className="flex justify-end mt-4 space-x-2">
-        <button onClick={() => setShowModal(false)} className="bg-red-600 text-white px-4 py-2 rounded">Close</button>
-        <button className="bg-green-600 text-white px-4 py-2 rounded">Save</button>
-      </div>
-    </div>
-  </div>
-)}
+      
 {showNoteModal && (
   <div className="fixed inset-0   bg-opacity-50 flex items-center justify-center z-50">
     <div className="bg-white rounded shadow-md p-6 w-full max-w-md">

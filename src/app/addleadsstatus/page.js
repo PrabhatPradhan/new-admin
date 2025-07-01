@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Navbar from "../../Components/Navbar/Navbar";
 import { FaTachometerAlt, FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import Link from "next/link";
 
 export default function Page() {
   const [selectAll, setSelectAll] = useState(false);
@@ -13,9 +14,9 @@ export default function Page() {
     row4: true,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // <-- NEW
+   
   const [newLeadSource, setNewLeadSource] = useState("");
-  const [editData, setEditData] = useState({ name: "", status: "Active" }); // <-- NEW
+  
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [leadToDelete, setLeadToDelete] = useState(null);
 
@@ -40,15 +41,9 @@ export default function Page() {
     setNewLeadSource("");
   };
 
-  const handleEditClick = (source) => {
-    setEditData({ name: source, status: "Active" });
-    setIsEditModalOpen(true);
-  };
+  
 
-  const handleUpdateLead = () => {
-    console.log("Updated Lead Source:", editData);
-    setIsEditModalOpen(false);
-  };
+  
   const handleDeleteClick = (leadKey) => {
     setLeadToDelete(leadKey);
     setIsDeleteModalOpen(true);
@@ -127,57 +122,7 @@ export default function Page() {
             )}
 
             {/* Edit Modal */}
-            {isEditModalOpen && (
-              <div className="fixed inset-0   bg-opacity-50 flex items-center justify-center z-50 p-4">
-                <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
-                  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                    <span>📈</span> Update Lead Source
-                  </h2>
-
-                  <label className="block mb-1 font-medium">
-                    Lead Source Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Source Name"
-                    value={editData.name}
-                    onChange={(e) =>
-                      setEditData((prev) => ({ ...prev, name: e.target.value }))
-                    }
-                    className="w-full px-4 py-2 border rounded mb-4"
-                  />
-
-                  <select
-                    value={editData.status}
-                    onChange={(e) =>
-                      setEditData((prev) => ({
-                        ...prev,
-                        status: e.target.value,
-                      }))
-                    }
-                    className="w-full px-4 py-2 border rounded mb-4"
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-
-                  <div className="flex justify-between gap-3">
-                    <button
-                      onClick={() => setIsEditModalOpen(false)}
-                      className="bg-red-600 text-white px-4 py-2 rounded"
-                    >
-                      Close
-                    </button>
-                    <button
-                      onClick={handleUpdateLead}
-                      className="bg-teal-600 text-white px-4 py-2 rounded"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
+             
 
             {isDeleteModalOpen && (
               <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -255,12 +200,12 @@ export default function Page() {
                         </span>
                       </td>
                       <td className="px-4 py-2 border flex gap-2 flex-wrap">
-                        <button
-                          className="bg-teal-600 text-white p-2 rounded"
-                          onClick={() => handleEditClick(row.source)} // <-- ADDED
-                        >
-                          <FaEdit />
-                        </button>
+                      <Link href="/editlead">
+                          {" "}
+                          <button className="bg-teal-600 text-white p-2 rounded">
+                            <FaEdit />
+                          </button>{" "}
+                        </Link>
                         <button
                           className="bg-red-600 text-white p-2 rounded"
                           onClick={() => handleDeleteClick(row.key)}

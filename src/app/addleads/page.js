@@ -11,6 +11,7 @@ import {
   FaTrash,
   FaEye,
 } from "react-icons/fa";
+import Link from "next/link";
 
 const leadsData = [
   {
@@ -57,26 +58,18 @@ const leadsData = [
 
 export default function Page() {
   const [leads, setLeads] = useState(leadsData);
-  const [showModal, setShowModal] = useState(false);
+
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [showNoteModal, setShowNoteModal] = useState(false);
-const [selectedLeadIndex, setSelectedLeadIndex] = useState(null);
-const [note, setNote] = useState('');
+  const [selectedLeadIndex, setSelectedLeadIndex] = useState(null);
+  const [note, setNote] = useState("");
 
-  const [newLead, setNewLead] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    source: "",
-    assigned: "",
-    status: "",
-  });
   const [assignLead, setAssignLead] = useState({
     leadName: "",
     assignedTo: "",
   });
   const [showEditModal, setShowEditModal] = useState(false);
-  const [currentLeadIndex, setCurrentLeadIndex] = useState(null);
+
   const [editLead, setEditLead] = useState({
     name: "",
     email: "",
@@ -85,24 +78,6 @@ const [note, setNote] = useState('');
     assigned: "",
     status: "",
   });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewLead({ ...newLead, [name]: value });
-  };
-
-  const handleAddLead = () => {
-    setLeads([...leads, newLead]);
-    setNewLead({
-      name: "",
-      email: "",
-      mobile: "",
-      source: "",
-      assigned: "",
-      status: "",
-    });
-    setShowModal(false);
-  };
 
   const handleAssignChange = (e) => {
     const { name, value } = e.target;
@@ -120,12 +95,6 @@ const [note, setNote] = useState('');
     setShowAssignModal(false);
   };
 
-  const handleEditClick = (index) => {
-    setCurrentLeadIndex(index);
-    setEditLead(leads[index]);
-    setShowEditModal(true);
-  };
-
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditLead({ ...editLead, [name]: value });
@@ -141,6 +110,19 @@ const [note, setNote] = useState('');
   const handleDeleteLead = (index) => {
     const updatedLeads = leads.filter((_, i) => i !== index);
     setLeads(updatedLeads);
+  };
+  const [assignedLead, setAssignedLead] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const leadOptions = ["Assigned", "Unassigned", "In Progress", "Completed"];
+
+  const filteredOptions = leadOptions.filter((option) =>
+    option.toLowerCase().includes(assignedLead.toLowerCase())
+  );
+
+  const handleSelect = (value) => {
+    setAssignedLead(value);
+    setShowSuggestions(false);
   };
 
   return (
@@ -167,12 +149,11 @@ const [note, setNote] = useState('');
         <div className="p-4 sm:p-6 bg-gray-100 min-h-screen">
           <div className="bg-white rounded shadow-md p-4 max-w-7xl mx-auto space-y-4">
             <div className="flex flex-wrap gap-3">
-              <button
-                className="bg-teal-600 text-white px-4 py-2 rounded flex items-center gap-2"
-                onClick={() => setShowModal(true)}
-              >
-                <FaPlus /> Add new Lead
-              </button>
+              <Link href="/addnewleads">
+                <button className="bg-teal-600 text-white px-4 py-2 rounded flex items-center gap-2">
+                  <FaPlus /> Add new Lead
+                </button>
+              </Link>
               <button
                 className="bg-teal-600 text-white px-4 py-2 rounded flex items-center gap-2"
                 onClick={() => setShowAssignModal(true)}
@@ -182,14 +163,38 @@ const [note, setNote] = useState('');
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-              <div>
-                <label className="block mb-1 text-sm font-medium">
-                  Assigned Lead
-                </label>
-                <select className="w-full p-2 border rounded">
-                  <option>Assigned</option>
-                </select>
-              </div>
+            <div className="relative">
+      <label className="block mb-1 text-sm font-medium">Assigned Lead</label>
+      <input
+        type="text"
+        value={assignedLead}
+        onChange={(e) => {
+          setAssignedLead(e.target.value);
+          setShowSuggestions(true);
+        }}
+        onFocus={() => setShowSuggestions(true)}
+        onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
+        className="w-full p-2 border rounded"
+        placeholder="Search lead status..."
+      />
+
+      {showSuggestions && filteredOptions.length > 0 && (
+        <ul className="absolute z-10 bg-white border rounded mt-1 w-full max-h-40 overflow-auto shadow">
+          {filteredOptions.map((option) => (
+            <li
+              key={option}
+              onClick={() => handleSelect(option)}
+              className="p-2 hover:bg-gray-100 cursor-pointer text-sm"
+            >
+              {option}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Optional: show selected value */}
+      <p className="mt-2 text-sm text-gray-600">Selected: {assignedLead}</p>
+    </div>
               <div>
                 <label className="block mb-1 text-sm font-medium">
                   Lead Source
@@ -261,18 +266,19 @@ const [note, setNote] = useState('');
                       <td className="px-4 py-2 border">{lead.assigned}</td>
                       <td className="px-4 py-2 border">{lead.status}</td>
                       <td className="px-4 py-2 border flex gap-2 flex-wrap">
-                        <button
-                          className="bg-teal-600 text-white p-2 rounded"
-                          onClick={() => handleEditClick(index)}
-                        >
-                          <FaEdit />
-                        </button>
+                        <Link href="/editlead">
+                          {" "}
+                          <button className="bg-teal-600 text-white p-2 rounded">
+                            <FaEdit />
+                          </button>{" "}
+                        </Link>
                         <button
                           className="bg-red-600 text-white p-2 rounded"
                           onClick={() => handleDeleteLead(index)}
                         >
                           <FaTrash />
                         </button>
+
                         <button
                           onClick={() => {
                             setSelectedLeadIndex(index);
@@ -290,94 +296,9 @@ const [note, setNote] = useState('');
             </div>
 
             {/* Add New Lead Modal */}
-            {showModal && (
-              <div className="fixed inset-0   bg-opacity-40 flex items-center justify-center z-50 px-4">
-                <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-lg space-y-4">
-                  <h2 className="text-xl font-bold mb-4">Add New Lead</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {[
-                      "name",
-                      "email",
-                      "mobile",
-                      "source",
-                      "assigned",
-                      "status",
-                    ].map((field) => (
-                      <input
-                        key={field}
-                        type="text"
-                        name={field}
-                        placeholder={
-                          field.charAt(0).toUpperCase() + field.slice(1)
-                        }
-                        className="border p-2 rounded"
-                        value={newLead[field]}
-                        onChange={handleChange}
-                      />
-                    ))}
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <button
-                      className="bg-gray-300 px-4 py-2 rounded"
-                      onClick={() => setShowModal(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="bg-teal-600 text-white px-4 py-2 rounded"
-                      onClick={handleAddLead}
-                    >
-                      Add Lead
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
 
             {/* Edit Lead Modal */}
-            {showEditModal && (
-              <div className="fixed inset-0   bg-opacity-40 flex items-center justify-center z-50 px-4">
-                <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-lg space-y-4">
-                  <h2 className="text-xl font-bold mb-4">Edit Lead</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {[
-                      "name",
-                      "email",
-                      "mobile",
-                      "source",
-                      "assigned",
-                      "status",
-                    ].map((field) => (
-                      <input
-                        key={field}
-                        type="text"
-                        name={field}
-                        placeholder={
-                          field.charAt(0).toUpperCase() + field.slice(1)
-                        }
-                        className="border p-2 rounded"
-                        value={editLead[field]}
-                        onChange={handleEditChange}
-                      />
-                    ))}
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <button
-                      className="bg-gray-300 px-4 py-2 rounded"
-                      onClick={() => setShowEditModal(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="bg-teal-600 text-white px-4 py-2 rounded"
-                      onClick={handleUpdateLead}
-                    >
-                      Update Lead
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
+
             {showNoteModal && selectedLeadIndex !== null && (
               <div className="fixed inset-0   bg-opacity-40 flex items-center justify-center z-50">
                 <div
